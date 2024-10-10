@@ -198,6 +198,52 @@ class Dataset:
         y = np.random.randint(0, n_classes, n_samples)
         return cls(X, y, features=features, label=label)
 
+    def dropna(self) -> 'Dataset':
+        """
+        Remove all samples containing at least one null value (NaN) from the dataset.
+
+        Returns
+        -------
+        Self: The modified Dataset object without NaN values in any independent feature/variable.
+        """
+        samples_without_na = ~np.isnan(self.X).any(axis=1)
+        self.X = self.X[samples_without_na]
+        self.y = self.y[samples_without_na]
+        return self
+    
+
+    def fillna(self, value: Union[float, str]) -> 'Dataset':
+
+        if isinstance(value, float):
+            self.X = np.where(np.isnan(self.X), value, self.X)
+
+        elif value == "mean":
+            means = self.get_mean()
+            for i in range(self.X.shape[1]):
+                self.X[:, i] = np.where(np.isnan(self.X[:, i]), means[i], self.X[:, i])
+
+        elif value == "median":
+            medians = self.get_median()
+            for i in range(self.X.shape[1]):
+                self.X[:, i] = np.where(np.isnan(self.X[:, i]), medians[i], self.X[:, i])
+        else:
+            raise ValueError("It is not possible to replace with the indicated value..")
+
+        return self
+
+    def remove_by_index(self, index:int) -> 'Dataset':
+        if index < 0 or index >= len(self.X):
+            raise IndexError("Index out of limites.")
+        
+        self.X = np.delete(self.X, index, axis=0)
+
+        if self.y is not None:
+            self.y = np.delete(self.y, index, axis=0)
+
+        return self
+
+
+
 
 if __name__ == '__main__':
     X = np.array([[1, 2, 3], [4, 5, 6]])
@@ -214,3 +260,46 @@ if __name__ == '__main__':
     print(dataset.get_min())
     print(dataset.get_max())
     print(dataset.summary())
+
+print("\n")
+
+
+if __name__ == '__main__':
+    X = np.array([[1, 2], [np.nan, 4], [5, np.nan]])
+    y = np.array([1, 2, 3])
+    features = np.array(['a', 'b'])
+    dataset = Dataset(X, y, features)
+
+    print("Before fillna:")
+    print("X:\n", dataset.X)
+    print("y:\n", dataset.y)
+
+    dataset.fillna("mean")
+    print("\nDataset after replace NaN by the average")
+    print(dataset.X)
+
+    dataset.fillna("median")
+    print("Dataset after replace NaN by the median:")
+    print(dataset.X)
+
+
+    dataset.fillna(0.0)
+    print("Dataset after replace NaN by float:")
+    print(dataset.X)
+
+    
+if __name__ == "__main__":
+    X = np.array([[1, 2], [3, 4], [5, 6]])
+    y = np.array([10, 20, 30])
+    features = np.array(['a', 'b'])
+
+    dataset = Dataset(X, y, features)
+
+    print("X:\n", dataset.X)
+    print("y:\n", dataset.y)
+
+    dataset.remove_by_index(1)
+
+    print("\nDataset after removing sample idx 1:")
+    print("X:\n", dataset.X)
+    print("y:\n", dataset.y)   
