@@ -1,5 +1,6 @@
 from typing import Callable
 
+
 import numpy as np
 
 from si.base.model import Model
