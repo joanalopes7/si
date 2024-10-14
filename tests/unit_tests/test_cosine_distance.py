@@ -15,7 +15,6 @@ class TestCosineDistance(TestCase):
         y = np.array([[1, 2, 3], [4, 5, 6]])
         our_distance = cosine_distance(x, y)
 
-
         from sklearn.metrics.pairwise import cosine_distances
         sklearn_distance = cosine_distances(x.reshape(1, -1), y)
         assert np.allclose(our_distance, sklearn_distance)
