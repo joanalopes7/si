@@ -7,9 +7,7 @@ from datasets import DATASETS_PATH
 
 import os
 from si.io.csv_file import read_csv
-
 from si.models.knn_classifier import KNNClassifier
-
 from si.model_selection.split import train_test_split
 
 class TestKNN(TestCase):

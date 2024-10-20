@@ -183,7 +183,9 @@ class KMeans(Transformer, Model):
         """
         return np.apply_along_axis(self._get_closest_centroid, axis=1, arr=dataset.X)
 
-
+    def _score(self, dataset, predictions):
+        pass
+    
 if __name__ == '__main__':
     from si.data.dataset import Dataset
 

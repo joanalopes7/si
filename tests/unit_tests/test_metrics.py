@@ -11,3 +11,7 @@ class TestMetrics(TestCase):
         y_pred = np.array([0,1,1,1,1,1,0])
 
         self.assertTrue(accuracy(y_true, y_pred)==1)
+
+    def test_mse(self):
+
+        

@@ -12,11 +12,9 @@ class TestKMeans(TestCase):
 
     def setUp(self):
         self.csv_file = os.path.join(DATASETS_PATH, 'iris', 'iris.csv')
-
         self.dataset = read_csv(filename=self.csv_file, features=True, label=True)
 
     def test_fit(self):
-
         k_ = 3
         kmeans = KMeans(k_)
         res = kmeans.fit(self.dataset)
