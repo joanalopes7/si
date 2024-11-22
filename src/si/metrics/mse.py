@@ -1,12 +1,5 @@
 import numpy as np
 
-def mse (y_true: np.array, y_pred:np.array) -> float:
-    """
-    ddd
-    """
-    return (np.sum(y_true-y_pred)**2) / len(y_true)
-=======
-
 def mse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """
     It returns the mean squared error for the y_pred variable.
