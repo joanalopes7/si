@@ -32,9 +32,10 @@ class TestMetrics(TestCase):
         self.assertTrue(all(x_sigmoid <= 1))
 
     def test_rmse(self):
-        y_true = np.array([0.1,1.1,1,1,1,1,0])
-        y_pred = np.array([0,1,1.1,1,1,1,0])
-
-        calculated_rmse = rmse(y_true, y_pred)
+        # Valores reais e previstos
+        y_true = np.array([0.1, 1.1, 1, 1, 1, 1, 0])
+        y_pred = np.array([0, 1, 1.1, 1, 1, 1, 0])
+        
         expected_rmse = np.sqrt(0.004)
-        self.assertTrue(round(calculated_rmse, 3) == round(expected_rmse, 3))
+        calculated_rmse = rmse(y_true, y_pred)
+        self.assertAlmostEqual(calculated_rmse, expected_rmse, places=2)
