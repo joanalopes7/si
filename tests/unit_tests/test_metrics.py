@@ -4,6 +4,7 @@ import numpy as np
 from si.metrics.accuracy import accuracy
 from si.metrics.mse import mse
 from si.statistics.sigmoid_function import sigmoid_function
+from si.metrics.rmse import rmse
 
 class TestMetrics(TestCase):
 
@@ -30,3 +31,11 @@ class TestMetrics(TestCase):
 
         self.assertTrue(all(x_sigmoid >= 0))
         self.assertTrue(all(x_sigmoid <= 1))
+
+    def test_rmse(self):
+        y_true = np.array([0.1,1.1,1,1,1,1,0])
+        y_pred = np.array([0,1,1.1,1,1,1,0])
+
+        calculated_rmse = rmse(y_true, y_pred)
+        expected_rmse = np.sqrt(0.004)
+        self.assertTrue(round(calculated_rmse, 3) == round(expected_rmse, 3))
