@@ -22,7 +22,6 @@ class TestMetrics(TestCase):
 
         self.assertTrue(round(mse(y_true, y_pred), 3)==0.004)
         
-
     def test_sigmoid_function(self):
 
         x = np.array([1.9, 10.4, 75])
