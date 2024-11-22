@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 import numpy as np
+from sklearn.metrics import mean_squared_error
 from si.metrics.accuracy import accuracy
 from si.metrics.mse import mse
 from si.statistics.sigmoid_function import sigmoid_function
@@ -36,6 +37,7 @@ class TestMetrics(TestCase):
         y_true = np.array([0.1, 1.1, 1, 1, 1, 1, 0])
         y_pred = np.array([0, 1, 1.1, 1, 1, 1, 0])
         
-        expected_rmse = np.sqrt(0.004)
-        calculated_rmse = rmse(y_true, y_pred)
-        self.assertAlmostEqual(calculated_rmse, expected_rmse, places=2)
+        my_rmse = rmse(y_true, y_pred)
+        sklearn_mse = mean_squared_error(y_true, y_pred)
+        sklearn_rmse = np.sqrt(sklearn_mse)
+        assert np.isclose(my_rmse, sklearn_rmse)
