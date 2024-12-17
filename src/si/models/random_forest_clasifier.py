@@ -3,8 +3,6 @@
 from typing import Literal
 
 import numpy as np
-from scipy import stats
-from sklearn.utils import resample
 from si.base.model import Model
 from si.data.dataset import Dataset
 from si.metrics.accuracy import accuracy
