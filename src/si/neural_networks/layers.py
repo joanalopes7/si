@@ -138,4 +138,88 @@ class DenseLayer(Layer):
         tuple
             The shape of the output of the layer.
         """
-        return (self.n_units,) 
+        return (self.n_units,)
+    
+class Dropout(Layer):
+    """
+    Regularization technique where a random set of neurons is temporarily ignored (dropped out) during training.
+    """
+     
+    def __init__(self, probability: float):
+        """
+        Initialize the dropout layer.
+
+        Parameters
+        ----------
+        probability: float
+            The dropout rate, between 0 and 1
+        """
+        super().__init__()
+        self.probability = probability
+
+        self.mask=None
+        self.input = None
+        self.output = None
+
+    def forward_propagation(self, input: np.ndarray, training: bool) -> np.ndarray:
+        """
+        Perform forward propagation on the given input.
+
+        Parameters
+        ----------
+        input: numpy.ndarray
+            The input to the layer.
+        training: bool
+            Whether the layer is in training mode or in inference mode.
+
+        Returns
+        -------
+        numpy.ndarray
+            The output of the layer.
+        """
+        self.input = input
+        if training:
+            self.mask = np.random.binomial(1, 1 - self.probability, size=input.shape)
+            self.output = input * self.mask / (1 - self.probability)
+        else:
+            self.output = input
+        return self.output
+
+    def backward_propagation(self, output_error: np.ndarray) -> np.ndarray:
+        """
+        Perform backward propagation on the given output error.
+
+        Parameters
+        ----------
+        output_error: numpy.ndarray
+            The output error of the layer.
+
+        Returns
+        -------
+        numpy.ndarray
+            The input error of the layer.
+        """
+        return output_error * self.mask / (1 - self.probability)
+
+    def output_shape(self) -> tuple:
+        """
+        Returns the shape of the output of the layer.
+
+        Returns
+        -------
+        tuple
+            The shape of the output of the layer.
+        """
+        return self.input.shape
+
+    def parameters(self) -> int:
+        """
+        Returns the number of parameters of the layer.
+
+        Returns
+        -------
+        int
+            The number of parameters of the layer.
+        """
+        return 0
+    
