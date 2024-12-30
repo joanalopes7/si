@@ -12,7 +12,7 @@ from si.models.decision_tree_classifier import DecisionTreeClassifier
 from si.models.knn_classifier import KNNClassifier
 from si.models.logistic_regression import LogisticRegression
 
-class TestVotingClassifier(TestCase):
+class TestStackingClassifier(TestCase):
 
     def setUp(self):
         self.csv_file = os.path.join(DATASETS_PATH, 'breast_bin', 'breast-bin.csv')
