@@ -44,16 +44,24 @@ class PCA(Transformer):
         dataset : Dataset
            A labeled dataset
         """ 
-        # Step 1: Center the data
+        #Center the data
         X=dataset.X
         self.mean = np.mean(X, axis=0)
         X_centered = X - self.mean
+
+        #Calculate the covariance matrix of the centered data
         covariance_matrix = np.cov(X_centered, rowvar=False)
+
+        #Perform eigenvalue decomposition on the covariance matrix
         eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
         sorted_indices = np.argsort(eigenvalues)[::-1]
         sorted_eigenvalues = eigenvalues[sorted_indices]
         sorted_eigenvectors = eigenvectors[:, sorted_indices]
+
+        #Infer the Principal Components
         self.components = sorted_eigenvectors[:, :self.n_components]
+
+        #Infer the Explained Variance
         total_variance = np.sum(sorted_eigenvalues)
         self.explained_variance = sorted_eigenvalues[:self.n_components] / total_variance
 
