@@ -213,6 +213,34 @@ class Dataset:
     
 
     def fillna(self, value: Union[float, str]) -> 'Dataset':
+        """
+        Fills NaN values in the dataset with a specified value.
+
+        Depending on the argument passed to the `value` parameter, NaN values in `self.X` can be replaced by:
+        - A specific value (float).
+        - The mean of each column (mean).
+        - The median of each column (median).
+
+        The method returns the modified Dataset object with NaN values filled according to the provided value.
+
+        Parameters
+        ----------
+        value : Union[float, str]
+            The value used to fill NaN values. It can be:
+            - A float, which will replace all NaN values.
+            - The string "mean", to replace NaNs with the mean of each column of self.X.
+            - The string "median", to replace NaNs with the median of each column of self.X.
+
+        Returns
+        -------
+        self : Dataset
+            The modified Dataset object with NaN values filled according to the specified value.
+
+        Raises
+        ------
+        ValueError
+            If the value parameter is not of type float, "mean", or "median", an error will be raised.
+        """
 
         if isinstance(value, float):
             self.X = np.where(np.isnan(self.X), value, self.X)
@@ -227,11 +255,29 @@ class Dataset:
             for i in range(self.X.shape[1]):
                 self.X[:, i] = np.where(np.isnan(self.X[:, i]), medians[i], self.X[:, i])
         else:
-            raise ValueError("It is not possible to replace with the indicated value..")
+            raise ValueError("It is not possible to replace with the indicated value.")
 
         return self
 
     def remove_by_index(self, index:int) -> 'Dataset':
+        """
+        Removes the sample at the specified index from the dataset.
+
+        Parameters
+        ----------
+        index : int
+            The index of the sample to be removed from the dataset.
+
+        Returns
+        -------
+        self : Dataset
+            The modified dataset object with the sample removed.
+        
+        Raises
+        ------
+        IndexError
+            If the specified index is out of bounds (less than 0 or greater than the number of samples in the dataset).
+        """
         if index < 0 or index >= len(self.X):
             raise IndexError("Index out of limites.")
         
